@@ -1,16 +1,154 @@
-# farmvisualconfig
+# 萌芽农场可视化游戏配置工具
 
-A new Flutter project.
+一个基于Flutter开发的MongoDB数据库可视化管理工具，专门用于管理萌芽农场游戏的配置数据。
 
-## Getting Started
+## 项目概述
 
-This project is a starting point for a Flutter application.
+本项目是一个跨平台的数据库管理应用，提供直观的界面来查看、编辑和管理MongoDB数据库中的游戏配置数据。支持多种数据集合的切换和实时数据编辑功能。
 
-A few resources to get you started if this is your first Flutter project:
+## 主要功能
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 🔗 数据库连接管理
+- 支持MongoDB数据库连接配置
+- 可配置主机地址、端口、数据库名称
+- 支持用户名密码认证（可选）
+- 连接状态实时显示
+- 连接测试功能
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 📊 数据集合管理
+- 支持多个数据集合切换：
+  - `gameconfig` - 游戏配置数据
+  - `playerdata` - 玩家数据
+  - `chat` - 聊天记录
+- 实时显示集合中的文档数量
+- 动态加载集合数据
+
+### ✏️ 数据编辑功能
+- 可视化数据展示，支持展开/折叠视图
+- 支持JSON格式数据的语法高亮编辑
+- 表单式编辑界面，支持多种数据类型
+- 实时JSON格式验证
+- 数据导入/导出功能（剪贴板）
+
+### 🛠️ 高级功能
+- JSON内容复制到剪贴板
+- 专用JSON编辑器，支持格式化
+- 文档完整性验证
+- 错误提示和状态反馈
+- 子对象删除功能
+
+## 项目结构
+
+```
+lib/
+├── main.dart                    # 应用程序入口和主要UI组件
+│   ├── MyApp                    # 应用根组件
+│   ├── JsonHighlightTextField   # JSON语法高亮文本输入组件
+│   ├── GameConfigPage          # 主页面组件
+│   ├── JsonEditorPage          # JSON编辑器页面
+│   ├── ConfigEditPage          # 配置编辑页面
+│   └── SettingsDialog          # 数据库设置对话框
+└── services/
+    └── database_service.dart    # MongoDB数据库服务
+        └── DatabaseService      # 数据库操作封装类
+```
+
+## 核心组件说明
+
+### 1. 主应用组件 (MyApp)
+- 配置应用主题和路由
+- 使用Material 3设计规范
+- 绿色主题色调，符合农场主题
+
+### 2. JSON高亮文本框 (JsonHighlightTextField)
+- 支持多行JSON文本编辑
+- 等宽字体显示，提高代码可读性
+- 自定义样式和提示文本
+
+### 3. 主页面 (GameConfigPage)
+- **数据库连接管理**：自动连接、状态显示、重连功能
+- **集合切换**：下拉选择不同数据集合
+- **数据列表展示**：卡片式布局，支持展开查看详情
+- **动态标题生成**：根据不同集合类型显示相应的标题和副标题
+- **操作按钮**：编辑、刷新、设置等功能
+
+### 4. JSON编辑器 (JsonEditorPage)
+- 全屏JSON编辑界面
+- 实时JSON格式验证
+- 自动格式化功能
+- 错误提示显示
+
+### 5. 配置编辑页面 (ConfigEditPage)
+- 表单式字段编辑
+- 支持不同数据类型的编辑器
+- JSON字段专用编辑功能
+- 数据导入/导出功能
+- 字段删除功能
+
+### 6. 设置对话框 (SettingsDialog)
+- 数据库连接参数配置
+- 连接测试功能
+- 密码显示/隐藏切换
+- 应用信息展示
+
+### 7. 数据库服务 (DatabaseService)
+- **单例模式**：确保全局唯一数据库连接
+- **连接管理**：连接、断开、状态检查
+- **配置持久化**：使用SharedPreferences保存连接配置
+- **集合操作**：切换集合、查询文档、更新文档
+- **CRUD操作**：完整的增删改查功能
+- **错误处理**：完善的异常处理和日志记录
+
+## 技术特性
+
+### 🎨 UI/UX设计
+- Material 3设计规范
+- 响应式布局设计
+- 直观的用户交互
+- 实时状态反馈
+- 错误提示和成功提示
+
+### 🔧 技术架构
+- **状态管理**：使用StatefulWidget进行本地状态管理
+- **数据持久化**：SharedPreferences存储用户配置
+- **数据库连接**：mongo_dart包提供MongoDB连接
+- **JSON处理**：内置JSON编码解码功能
+- **剪贴板操作**：支持数据导入导出
+
+### 📱 跨平台支持
+- Windows
+- macOS
+- Linux
+- Web
+- Android
+- iOS
+
+## 依赖包
+
+- `flutter/material.dart` - Flutter UI框架
+- `flutter/services.dart` - 系统服务（剪贴板等）
+- `mongo_dart` - MongoDB数据库连接
+- `shared_preferences` - 本地数据存储
+
+## 开发者信息
+
+- **开发框架**：Flutter
+- **作者**：树萌芽
+- **项目类型**：数据库管理工具
+- **目标平台**：跨平台桌面和移动应用
+
+## 使用说明
+
+1. **配置数据库连接**：点击设置按钮，输入MongoDB连接信息
+2. **测试连接**：使用测试连接功能验证数据库配置
+3. **选择集合**：使用顶部下拉菜单切换不同的数据集合
+4. **查看数据**：点击卡片展开查看详细数据
+5. **编辑数据**：点击编辑按钮进入编辑模式
+6. **保存更改**：编辑完成后点击保存按钮
+
+## 注意事项
+
+- 确保MongoDB服务正在运行
+- 检查网络连接和防火墙设置
+- 备份重要数据后再进行编辑操作
+- JSON格式必须正确才能保存更改
