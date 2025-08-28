@@ -1,0 +1,56 @@
+// Gradle全局初始化脚本，强制使用国内镜像源
+allprojects {
+    repositories {
+        all { ArtifactRepository repo ->
+            if (repo instanceof MavenArtifactRepository) {
+                def url = repo.url.toString()
+                if (url.startsWith('https://repo1.maven.org/maven2/')) {
+                    project.logger.lifecycle "Repository ${repo.url} replaced by https://maven.aliyun.com/repository/central".
+                    remove repo
+                }
+                if (url.startsWith('https://dl.google.com/dl/android/maven2/')) {
+                    project.logger.lifecycle "Repository ${repo.url} replaced by https://maven.aliyun.com/repository/google".
+                    remove repo
+                }
+                if (url.startsWith('https://plugins.gradle.org/m2/')) {
+                    project.logger.lifecycle "Repository ${repo.url} replaced by https://maven.aliyun.com/repository/gradle-plugin".
+                    remove repo
+                }
+            }
+        }
+        
+        // 添加阿里云镜像源
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        
+        // 华为云镜像源作为备用
+        maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+        
+        // 腾讯云镜像源作为备用
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+    }
+}
+
+// 插件仓库配置
+settingsEvaluated { settings ->
+    settings.pluginManagement {
+        repositories {
+            all { ArtifactRepository repo ->
+                if (repo instanceof MavenArtifactRepository) {
+                    def url = repo.url.toString()
+                    if (url.startsWith('https://plugins.gradle.org/m2/')) {
+                        project.logger.lifecycle "Plugin repository ${repo.url} replaced by https://maven.aliyun.com/repository/gradle-plugin".
+                        remove repo
+                    }
+                }
+            }
+            
+            maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+            maven { url 'https://maven.aliyun.com/repository/google' }
+            maven { url 'https://maven.aliyun.com/repository/central' }
+            maven { url 'https://maven.aliyun.com/repository/public' }
+        }
+    }
+}
